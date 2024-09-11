@@ -1,11 +1,11 @@
 "use client";
 
-import '../globals.css';  // Update this to point to your actual globals.css location
+import '../globals.css';  // Import global styles (Tailwind CSS setup)
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import Highcharts from 'highcharts/highstock';  // Highstock includes financial charts
-import HighchartsReact from 'highcharts-react-official';
-import { Line, Bar, Pie } from 'react-chartjs-2';
+import axios from 'axios';  // Axios for making API requests
+import Highcharts from 'highcharts/highstock';  // Import Highstock for financial charts like candlestick
+import HighchartsReact from 'highcharts-react-official';  // Highcharts React wrapper
+import { Line, Bar, Pie } from 'react-chartjs-2';  // Import Line, Bar, Pie charts from chart.js
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -20,6 +20,7 @@ import {
 } from 'chart.js';
 import { ChartData } from 'chart.js';
 
+// Registering necessary Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -32,6 +33,7 @@ ChartJS.register(
   Legend
 );
 
+// Interface for chart data structure expected from the backend
 interface ChartDataResponse {
   labels: string[];
   data: number[];
@@ -42,12 +44,16 @@ interface CandlestickDataResponse {
 }
 
 const Dashboard = () => {
+  // State for storing chart data for Line, Bar, Pie charts
   const [lineChartData, setLineChartData] = useState<ChartData<'line'>>({ datasets: [] });
   const [barChartData, setBarChartData] = useState<ChartData<'bar'>>({ datasets: [] });
   const [pieChartData, setPieChartData] = useState<ChartData<'pie'>>({ datasets: [] });
+  
+  // State for storing options/config for the candlestick chart
   const [candlestickOptions, setCandlestickOptions] = useState<any>(null);
 
   useEffect(() => {
+    // Fetch data for the candlestick chart from the Django API
     axios.get<CandlestickDataResponse>('http://localhost:8000/api/candlestick-chart-data/')
       .then(response => {
         const candlestickData = response.data.data.map(item => [
@@ -58,6 +64,7 @@ const Dashboard = () => {
           item.close
         ]);
 
+        // Configure candlestick chart options for Highcharts
         setCandlestickOptions({
           rangeSelector: {
             selected: 1
@@ -76,6 +83,8 @@ const Dashboard = () => {
         });
       })
       .catch(err => console.error("Error fetching candlestick data", err));
+
+    // Fetch data for the line chart from the Django API
     axios.get<ChartDataResponse>('http://localhost:8000/api/line-chart-data/')
       .then(response => {
         setLineChartData({
@@ -90,6 +99,7 @@ const Dashboard = () => {
         });
       }).catch(err => console.error("Error fetching line chart data", err));
 
+    // Fetch data for the bar chart from the Django API
     axios.get<ChartDataResponse>('http://localhost:8000/api/bar-chart-data/')
       .then(response => {
         setBarChartData({
@@ -104,6 +114,7 @@ const Dashboard = () => {
         });
       }).catch(err => console.error("Error fetching bar chart data", err));
 
+    // Fetch data for the pie chart from the Django API
     axios.get<ChartDataResponse>('http://localhost:8000/api/pie-chart-data/')
       .then(response => {
         setPieChartData({
@@ -120,57 +131,56 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center bg-white">
-  <div className="container mx-auto px-8 py-12">
-    <h1 className="text-3xl font-bold mb-8 text-center text-black">Dashboard</h1>
+      <div className="container mx-auto px-8 py-12">
+        <h1 className="text-3xl font-bold mb-8 text-center text-black">Dashboard</h1>
 
-    {/* Responsive Grid Layout for Charts */}
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      
-      {/* Line Chart */}
-      <div className="p-6 bg-white shadow-md rounded-md transition-transform duration-300 hover:scale-105 h-[400px] flex flex-col justify-center">
-        <h2 className="text-2xl font-semibold mb-4 text-center text-black">Line Chart</h2>
-        <div className="flex-1">
-          {lineChartData && <Line data={lineChartData} options={{ maintainAspectRatio: false }} />}
-        </div>
-      </div>
-
-      {/* Bar Chart */}
-      <div className="p-6 bg-white shadow-md rounded-md transition-transform duration-300 hover:scale-105 h-[400px] flex flex-col justify-center">
-        <h2 className="text-2xl font-semibold mb-4 text-center text-black">Bar Chart</h2>
-        <div className="flex-1">
-          {barChartData && <Bar data={barChartData} options={{ maintainAspectRatio: false }} />}
-        </div>
-      </div>
-
-      {/* Pie Chart */}
-      <div className="p-6 bg-white shadow-md rounded-md transition-transform duration-300 hover:scale-105 h-[400px] flex flex-col justify-center">
-        <h2 className="text-2xl font-semibold mb-4 text-center text-black">Pie Chart</h2>
-        <div className="flex-1 flex justify-center items-center">
-          {pieChartData && (
-            <div className="w-[250px] h-[250px]">
-              <Pie data={pieChartData} options={{ maintainAspectRatio: false }} />
+        {/* Responsive Grid Layout for Charts */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          {/* Line Chart */}
+          <div className="p-6 bg-white shadow-md rounded-md transition-transform duration-300 hover:scale-105 h-[400px] flex flex-col justify-center">
+            <h2 className="text-2xl font-semibold mb-4 text-center text-black">Line Chart</h2>
+            <div className="flex-1">
+              {lineChartData && <Line data={lineChartData} options={{ maintainAspectRatio: false }} />}
             </div>
-          )}
-        </div>
-      </div>
+          </div>
 
-      {/* Candlestick Chart */}
-      <div className="p-6 bg-white shadow-md rounded-md transition-transform duration-300 hover:scale-105 h-[400px] flex flex-col justify-center">
-        <h2 className="text-2xl font-semibold mb-4 text-center text-black">Candlestick Chart</h2>
-        {candlestickOptions && (
-          <HighchartsReact
-            highcharts={Highcharts}
-            constructorType={'stockChart'}
-            options={candlestickOptions}
-          />
-        )}
+          {/* Bar Chart */}
+          <div className="p-6 bg-white shadow-md rounded-md transition-transform duration-300 hover:scale-105 h-[400px] flex flex-col justify-center">
+            <h2 className="text-2xl font-semibold mb-4 text-center text-black">Bar Chart</h2>
+            <div className="flex-1">
+              {barChartData && <Bar data={barChartData} options={{ maintainAspectRatio: false }} />}
+            </div>
+          </div>
+
+          {/* Pie Chart */}
+          <div className="p-6 bg-white shadow-md rounded-md transition-transform duration-300 hover:scale-105 h-[400px] flex flex-col justify-center">
+            <h2 className="text-2xl font-semibold mb-4 text-center text-black">Pie Chart</h2>
+            <div className="flex-1 flex justify-center items-center">
+              {pieChartData && (
+                <div className="w-[250px] h-[250px]">
+                  <Pie data={pieChartData} options={{ maintainAspectRatio: false }} />
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Candlestick Chart */}
+          <div className="p-6 bg-white shadow-md rounded-md transition-transform duration-300 hover:scale-105 h-[400px] flex flex-col justify-center">
+            <h2 className="text-2xl font-semibold mb-4 text-center text-black">Candlestick Chart</h2>
+            {candlestickOptions && (
+              <HighchartsReact
+                highcharts={Highcharts}
+                constructorType={'stockChart'}
+                options={candlestickOptions}
+              />
+            )}
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-
   );
 };
 
-// Make sure the default export is a React component
+// Exporting Dashboard component as default
 export default Dashboard;

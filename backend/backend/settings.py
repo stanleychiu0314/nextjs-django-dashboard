@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",  # Django REST Framework
-    "charts",  # Your charts app
+    "charts",  
     "corsheaders",  # To handle CORS
 ]
 
