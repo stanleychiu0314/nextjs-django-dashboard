@@ -34,6 +34,12 @@ This project is a dashboard application built with **Next.js** on the frontend a
 
 ---
 
+## Brief Explanation of the Approach and Thought Process
+
+The development of this project followed a structured approach, integrating a Next.js frontend with a Django backend to create an interactive dashboard. The primary goal was to display four types of charts: Line, Bar, Pie, and Candlestick, each fetching data from API endpoints on the Django backend. Initially, **Chart.js** was used to implement the Line, Bar, and Pie charts due to its simplicity and compatibility with React. However, after encountering issues with implementing a Candlestick chart using Chart.js and Recharts, I decided to use **Highcharts** for the Candlestick chart because of its robust support for financial data visualization.
+
+TailwindCSS was chosen for styling because it allowed rapid UI development with minimal custom CSS, ensuring a responsive layout for the dashboard. Key challenges such as fitting all four charts symmetrically on a single screen without scrolling and maintaining responsiveness across different screen sizes were addressed using Tailwind's utility-first classes. The project also focused on code modularity and maintainability, using React hooks to fetch data and update the charts dynamically. In the end, the combination of **Chart.js** and **Highcharts** provided a versatile solution for creating a visually appealing and highly interactive dashboard.
+
 ## Getting Started
 
 ### Prerequisites
