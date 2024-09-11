@@ -30,8 +30,7 @@ This project is a dashboard application built with **Next.js** on the frontend a
 2. [Frontend Setup](#frontend-setup)
 3. [Backend Setup](#backend-setup)
 4. [Running the Application](#running-the-application)
-5. [File Structure](#file-structure)
-6. [Future Improvements](#future-improvements)
+5. [Future Improvements](#future-improvements)
 
 ---
 
@@ -242,3 +241,10 @@ To run the application, follow these steps:
 Once both the backend and frontend servers are running, visit `http://localhost:3000` in your browser to view the dashboard with the charts.
 
 ---
+
+## Future improvements
+
+1. Add more interactive features: Incorporate chart interactions like zooming and panning.
+2. Use a database: Instead of hardcoded data, connect the backend to a database (e.g., PostgreSQL) for dynamic data fetching.
+3. Authentication: Add user authentication to personalize the dashboard data.
+4. Error handling: Enhance error handling and display error messages on the frontend when API calls fail.
