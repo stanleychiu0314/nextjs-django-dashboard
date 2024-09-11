@@ -63,7 +63,7 @@ const Dashboard = () => {
             selected: 1
           },
           title: {
-            text: 'Candlestick Chart'
+            text: ''  // Remove internal Highcharts title
           },
           series: [{
             type: 'candlestick',
