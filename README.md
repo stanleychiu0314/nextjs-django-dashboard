@@ -179,6 +179,11 @@ Ensure you have the following installed on your system:
 
    The frontend will be running at `http://localhost:3000`.
 
+5. **Change the URL Address from the Default to Dashboard Page**
+    ```bash
+    http://localhost:3000/dashboard
+    ```
+
 ---
 
 ## Running the Application
